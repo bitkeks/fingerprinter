@@ -1,0 +1,6 @@
+{
+    "Baseurl": "/",
+    "Keydir": "keys",
+    "Datafile": "fingerprints.dat",
+    "Templatedir": "templates"
+}
