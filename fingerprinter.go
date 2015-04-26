@@ -18,10 +18,12 @@ import (
 
 // Config with all needed fields
 type Config struct {
+    Port        string
     Baseurl     string
     Keydir      string
     Datafile    string
     Templatedir string
+    Staticdir   string
 }
 
 func main() {
@@ -29,20 +31,23 @@ func main() {
 
     fh, err := os.Open("config.json")
     if err != nil {
-        log.Println(err)
+        log.Fatal(err)
     }
     dec := json.NewDecoder(fh)
     err = dec.Decode(&config)
     if err != nil {
-        log.Println(err)
+        log.Println("Error parsing config.json")
+        log.Fatal(err)
     }
+    log.Println("Config okay, checking paths")
 
-    toCheck := []string{config.Keydir, config.Datafile, config.Templatedir}
+    toCheck := []string{config.Keydir, config.Datafile, config.Templatedir, config.Staticdir}
     for _, e := range toCheck {
-        if !utils.PathExists(e) {
-            log.Printf("Path '%s' does not exist.\n", e)
+        if ok, err := utils.PathExistsErr(e); !ok {
+            log.Fatal(err)
         }
     }
 
-    web.Run()
+    log.Println("Starting server")
+    web.Run(config.Port, config.Baseurl, config.Templatedir, config.Staticdir)
 }
