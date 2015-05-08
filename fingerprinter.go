@@ -11,6 +11,7 @@ import (
     "log"
     "os"
 
+    "fingerprinter/repo"
     "fingerprinter/utils"
     "fingerprinter/web"
 )
@@ -48,6 +49,11 @@ func main() {
         }
     }
 
-    log.Println("Starting server")
+    log.Println("Starting server on port", config.Port)
+
+    repo := new(repo.Repo)
+    repo.ReadDatafile(config.Datafile)
+    repo.Print()
+
     web.Run(config.Port, config.Baseurl, config.Templatedir, config.Staticdir)
 }
