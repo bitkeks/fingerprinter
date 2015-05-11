@@ -51,9 +51,10 @@ func main() {
 
     log.Println("Starting server on port", config.Port)
 
-    repo := new(repo.Repo)
-    repo.ReadDatafile(config.Datafile)
-    repo.Print()
+    r := repo.GetRepo()
+    r.ReadDatafile(config.Datafile)
+    log.Println("The following records were read from the data file:")
+    r.Print()
 
     web.Run(config.Port, config.Baseurl, config.Templatedir, config.Staticdir)
 }

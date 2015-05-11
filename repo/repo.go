@@ -25,9 +25,24 @@ type Repo struct {
     l sync.Mutex
 }
 
+var _repo *Repo
+
 // Print details of a RepoEntry to log
 func (e *RepoEntry) Print() {
     log.Printf("Fingerprint %s for ID %s on service %s\n", e.Fingerprint, e.Identity, e.Service)
+}
+
+// Print the Entrys fingerprint with seperators after every 4 characters.
+func (e *RepoEntry) PrintSep() string {
+    fp := e.Fingerprint
+    res := ""
+    for idx, e := range fp {
+        if idx != 0 && idx % 4 == 0 {
+            res = res + " "
+        }
+        res = res + string(e)
+    }
+    return res
 }
 
 // Print all RepoEntry to the log
@@ -40,6 +55,16 @@ func (r *Repo) Print() {
 // Get a list of all RepoEntry in this Repo
 func (r *Repo) GetEntries() ([]*RepoEntry) {
     return r.entries
+}
+
+// Get a RepoEntry by its fingerprint.
+func (r *Repo) GetEntry(fp string) (bool, *RepoEntry) {
+    for _, e := range r.entries {
+        if e.Fingerprint == fp {
+            return true, e
+        }
+    }
+    return false, nil
 }
 
 // Read the datafile and parse as CSV.
@@ -63,7 +88,6 @@ func (r *Repo) ReadDatafile(datafile string) {
     }
 
     for _, e := range data {
-        log.Println(e)
         r.Add(newRepoEntry(e[0], e[1], e[2], e[3], e[4]))
     }
 }
@@ -86,7 +110,7 @@ func (r *Repo) Add(entry *RepoEntry) {
     // Avoid duplicates
     for _, v := range r.entries {
         if v.Fingerprint == entry.Fingerprint {
-            log.Printf("Key %s already in repo.\n", v.Fingerprint)
+            log.Printf("WARNING: Fingerprint %s has multiple records, only the first one is used!\n", v.Fingerprint)
             return
         }
     }
@@ -103,6 +127,14 @@ func (r *Repo) lock() {
 
 func (r *Repo) unlock() {
     r.l.Unlock()
+}
+
+// Singleton Repo object
+func GetRepo() (*Repo) {
+    if _repo == nil {
+        _repo = new(Repo)
+    }
+    return _repo
 }
 
 // Create a new RepoEntry and return the pointer
