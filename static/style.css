@@ -59,6 +59,31 @@ a > header {
     width: 30%;
 }
 
+span.pos {
+    color: #01EF00;
+}
+
+span.neg {
+    color: red;
+}
+
+span.pos, span.neg {
+    font-weight: bold;
+}
+
+table.resultdata {
+    margin: 20px auto;
+    text-align: left;
+    width: 95%;
+}
+
+table.resultdata > tbody > tr > td:nth-of-type(1) {
+    font-weight: bold;
+    padding-right: 10px;
+    text-align: right;
+}
+
+
 footer {
     font-size: 8pt;
     margin: auto;

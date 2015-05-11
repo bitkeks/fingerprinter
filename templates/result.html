@@ -1,0 +1,27 @@
+{{ define "body" }}
+    {{ if .Payload.Entry }}
+    <span class="pos">Yep, I know this fingerprint!</span>
+    <table class="resultdata">
+        <tr><td>Fingerprint</td><td>{{ .Payload.Entry.PrintSep }}</td></tr>
+        <tr><td>Used by</td><td>{{ .Payload.Entry.Identity }}</td></tr>
+        <tr><td>Service</td><td>{{ .Payload.Entry.Service }}</td></tr>
+        {{ if .Payload.Entry.Created }}
+            <tr>
+                <td>Created</td>
+                <td>{{ .Payload.Entry.Created }}</td>
+            </tr>
+        {{ end }}
+        {{ if .Payload.Entry.Comment }}
+            <tr>
+                <td>Comment</td>
+                <td>{{ .Payload.Entry.Comment }}</td>
+            </tr>
+        {{ end }}
+    </table>
+    {{ else }}
+    <span class="neg">Fingerprint not found.</span><br> 
+    Please send me an email with the source of the fingerprint.<br><br>
+    {{ end }}
+    <a href="{{ .Payload.Baseurl }}/check?fingerprint={{ .Payload.fp }}">
+        Link to this page</a>
+{{ end }}
