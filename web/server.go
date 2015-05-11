@@ -5,18 +5,22 @@ package web
 
 import (
     "net/http"
-    "strings"
+
+    "fingerprinter/utils"
 )
 
-var _baseurl string
+var (
+    _baseurl,
+    _templatedir string
+)
 
 // Establish endpoints and static paths and run the server
 func Run(port, baseurl, templatedir, staticdir string) {
-    // If not given, append an appending slash
-    if !strings.HasSuffix(baseurl, "/") {
-        baseurl = baseurl + "/"
-    }
+    utils.AppendSlash(&baseurl)
     _baseurl = baseurl
+
+    utils.AppendSlash(&templatedir)
+    _templatedir = templatedir
 
     registerEndpoint("/", IndexHandler)
     registerEndpoint("/check", CheckHandler)

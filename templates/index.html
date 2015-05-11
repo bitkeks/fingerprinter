@@ -1,0 +1,6 @@
+{{ define "body" }}
+<form action="{{ .Baseurl }}{{ .Payload.FormUrl }}" method="post">
+    <input name="fingerprint" type="text" placeholder="Insert fingerprint">
+    <button type="submit">Check!</button>
+</form>
+{{ end }}

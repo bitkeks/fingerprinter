@@ -5,12 +5,14 @@ package web
 
 import (
     "net/http"
-    "io"
 )
 
 // Handler for requests to "/"
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-    io.WriteString(w, "hello\n")
+    data := newPD("Index")
+    data.addPayload("FormUrl", "check")
+    t := parse("index.html")
+    t.Execute(w, data)
 }
 
 // Handler for requests to "/check"
