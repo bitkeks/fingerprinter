@@ -21,8 +21,8 @@ type RepoEntry struct {
 // Repo holding all collected RepoEntry.
 // Provides functions like Add().
 type Repo struct {
-    Entries []*RepoEntry
-    Lock sync.Mutex
+    entries []*RepoEntry
+    l sync.Mutex
 }
 
 // Print details of a RepoEntry to log
@@ -32,9 +32,14 @@ func (e *RepoEntry) Print() {
 
 // Print all RepoEntry to the log
 func (r *Repo) Print() {
-    for _, e := range r.Entries {
+    for _, e := range r.GetEntries() {
         e.Print()
     }
+}
+
+// Get a list of all RepoEntry in this Repo
+func (r *Repo) GetEntries() ([]*RepoEntry) {
+    return r.entries
 }
 
 // Read the datafile and parse as CSV.
@@ -65,21 +70,21 @@ func (r *Repo) ReadDatafile(datafile string) {
 
 // Add a RepoEntry to a Repo
 func (r *Repo) Add(entry *RepoEntry) {
-    r.Lock.Lock()
-    defer r.Lock.Unlock()
+    r.lock()
+    defer r.unlock()
 
     appendFunc := func(newKey *RepoEntry) {
-        r.Entries = append(r.Entries, newKey)
+        r.entries = append(r.entries, newKey)
     }
 
     // If repo is empty, don't check for duplicates
-    if len(r.Entries) == 0 {
+    if len(r.entries) == 0 {
         appendFunc(entry)
         return
     }
 
     // Avoid duplicates
-    for _, v := range r.Entries {
+    for _, v := range r.entries {
         if v.Fingerprint == entry.Fingerprint {
             log.Printf("Key %s already in repo.\n", v.Fingerprint)
             return
@@ -90,6 +95,14 @@ func (r *Repo) Add(entry *RepoEntry) {
     appendFunc(entry)
 
     return
+}
+
+func (r *Repo) lock() {
+    r.l.Lock()
+}
+
+func (r *Repo) unlock() {
+    r.l.Unlock()
 }
 
 // Create a new RepoEntry and return the pointer
