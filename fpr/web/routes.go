@@ -6,8 +6,8 @@ package web
 import (
     "net/http"
 
-    "fingerprinter/repo"
-    "fingerprinter/utils"
+    "fingerprinter/fpr/repo"
+    "fingerprinter/fpr/utils"
 )
 
 // Handler for requests to "/"

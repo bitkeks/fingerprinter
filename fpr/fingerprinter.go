@@ -4,16 +4,16 @@
 // Fingerprinter 
 // Use this tool to let others check if a fingerprint really belongs to one of your keys.
 
-package main
+package fingerprinter
 
 import (
     "encoding/json"
     "log"
     "os"
 
-    "fingerprinter/repo"
-    "fingerprinter/utils"
-    "fingerprinter/web"
+    "fingerprinter/fpr/repo"
+    "fingerprinter/fpr/utils"
+    "fingerprinter/fpr/web"
 )
 
 
@@ -27,7 +27,7 @@ type Config struct {
     Staticdir   string
 }
 
-func main() {
+func Start() {
     config := Config{}
 
     fh, err := os.Open("config.json")

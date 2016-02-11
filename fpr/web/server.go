@@ -6,7 +6,7 @@ package web
 import (
     "net/http"
 
-    "fingerprinter/utils"
+    "fingerprinter/fpr/utils"
 )
 
 var (
