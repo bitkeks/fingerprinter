@@ -25,6 +25,8 @@ This could for example be placed in `$GOPATH/src/fingerprinter-bin/main.go`.
 
 Then go into `$GOPATH/src/` and `git pull github.com/cooox/fingerprinter`. You can then build a binary with `go install fingerprinter-bin` which will be created at `$GOPATH/bin/fingerprinter-bin`.
 
+To run the binary, link the `static` and `templates` folders into the `$GOPATH/bin/` folder and run the binary.
+
 ## Screenshots
 
 Pretty simple interface.
