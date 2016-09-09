@@ -1,7 +1,7 @@
-// Copyright 2015 Dominik Pataky <mail@netdecorator.org>
+// Copyright 2015, 2016 Dominik Pataky <dom@netdecorator.org>
 // This file is part of Fingerprinter, for licence details see LICENCE
 
-// Fingerprinter 
+// Fingerprinter
 // Use this tool to let others check if a fingerprint really belongs to one of your keys.
 
 package fingerprinter
@@ -11,9 +11,9 @@ import (
     "log"
     "os"
 
-    "fingerprinter/fpr/repo"
-    "fingerprinter/fpr/utils"
-    "fingerprinter/fpr/web"
+    "fingerprinter/repo"
+    "fingerprinter/utils"
+    "fingerprinter/web"
 )
 
 
@@ -21,13 +21,12 @@ import (
 type Config struct {
     Port        string
     Baseurl     string
-    Keydir      string
     Datafile    string
     Templatedir string
     Staticdir   string
 }
 
-func Start() {
+func StartServer() {
     config := Config{}
 
     fh, err := os.Open("config.json")
@@ -38,11 +37,11 @@ func Start() {
     err = dec.Decode(&config)
     if err != nil {
         log.Println("Error parsing config.json")
-        log.Fatal(err)
+        //log.Fatal(err)
     }
     log.Println("Config okay, checking paths")
 
-    toCheck := []string{config.Keydir, config.Datafile, config.Templatedir, config.Staticdir}
+    toCheck := []string{config.Datafile, config.Templatedir, config.Staticdir}
     for _, e := range toCheck {
         if ok, err := utils.PathExistsErr(e); !ok {
             log.Fatal(err)

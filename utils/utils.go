@@ -1,4 +1,4 @@
-// Copyright 2015 Dominik Pataky <mail@netdecorator.org>
+// Copyright 2015, 2016 Dominik Pataky <dom@netdecorator.org>
 // This file is part of Fingerprinter, for licence details see LICENCE
 
 package utils

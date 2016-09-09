@@ -1,4 +1,4 @@
-// Copyright 2015 Dominik Pataky <mail@netdecorator.org>
+// Copyright 2015, 2016 Dominik Pataky <dom@netdecorator.org>
 // This file is part of Fingerprinter, for licence details see LICENCE
 
 package repo
@@ -22,7 +22,7 @@ type RepoEntry struct {
 // Provides functions like Add().
 type Repo struct {
     entries []*RepoEntry
-    l sync.Mutex
+    lock sync.Mutex
 }
 
 var _repo *Repo
@@ -94,8 +94,8 @@ func (r *Repo) ReadDatafile(datafile string) {
 
 // Add a RepoEntry to a Repo
 func (r *Repo) Add(entry *RepoEntry) {
-    r.lock()
-    defer r.unlock()
+    r.lock.Lock()
+    defer r.lock.Unlock()
 
     appendFunc := func(newKey *RepoEntry) {
         r.entries = append(r.entries, newKey)
@@ -119,14 +119,6 @@ func (r *Repo) Add(entry *RepoEntry) {
     appendFunc(entry)
 
     return
-}
-
-func (r *Repo) lock() {
-    r.l.Lock()
-}
-
-func (r *Repo) unlock() {
-    r.l.Unlock()
 }
 
 // Singleton Repo object
