@@ -2,6 +2,7 @@
     "Port": "1984",
     "Baseurl": "/",
     "Datafile": "fingerprints.dat",
+    "Keydir": "keys",
     "Templatedir": "templates",
     "Staticdir": "static"
 }

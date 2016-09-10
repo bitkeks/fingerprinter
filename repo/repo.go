@@ -16,6 +16,7 @@ type RepoEntry struct {
     Identity string
     Service string
     Comment string
+    AsciiArmor string
 }
 
 // Repo holding all collected RepoEntry.
@@ -88,7 +89,7 @@ func (r *Repo) ReadDatafile(datafile string) {
     }
 
     for _, e := range data {
-        r.Add(newRepoEntry(e[0], e[1], e[2], e[3], e[4]))
+        r.Add(newRepoEntry(e[0], e[1], e[2], e[3], e[4], ""))
     }
 }
 
@@ -130,13 +131,14 @@ func GetRepo() (*Repo) {
 }
 
 // Create a new RepoEntry and return the pointer
-func newRepoEntry(fp, created, id, service, comment string) *RepoEntry {
+func newRepoEntry(fp, created, id, service, comment, asciiarmor string) *RepoEntry {
     e := new(RepoEntry)
     e.Fingerprint = fp
     e.Created = created
     e.Identity = id
     e.Service = service
     e.Comment = comment
+    e.AsciiArmor = asciiarmor
 
     return e
 }
